@@ -1,0 +1,1715 @@
+basePath: /api
+definitions:
+  auth.LoginRequest:
+    properties:
+      password:
+        minLength: 3
+        type: string
+      type:
+        type: string
+      username:
+        type: string
+    required:
+    - password
+    - type
+    - username
+    type: object
+  auth.TokenResponse:
+    properties:
+      access:
+        type: string
+      message:
+        type: string
+    type: object
+  commodity.CreateCommodityRequest:
+    properties:
+      category:
+        type: string
+      default_name:
+        type: string
+      produce_address:
+        type: string
+      produce_at:
+        type: string
+    type: object
+  commodity.SearchQuery:
+    properties:
+      accurate:
+        type: boolean
+      range:
+        type: string
+      search:
+        type: string
+    type: object
+  common.ErrorDetailElement:
+    properties:
+      field:
+        type: string
+      message:
+        type: string
+      param:
+        type: string
+      struct_field:
+        type: string
+      tag:
+        type: string
+      value: {}
+    type: object
+  common.HttpError:
+    properties:
+      code:
+        type: integer
+      detail:
+        items:
+          $ref: '#/definitions/common.ErrorDetailElement'
+        type: array
+      message:
+        type: string
+    type: object
+  favorite.AddCommodityFavoriteModel:
+    properties:
+      commodity_id:
+        type: integer
+    required:
+    - commodity_id
+    type: object
+  favorite.AddFavoriteModel:
+    properties:
+      item_id:
+        type: integer
+    required:
+    - item_id
+    type: object
+  favorite.PriceLimitModel:
+    properties:
+      item_id:
+        type: integer
+      price_limit:
+        type: number
+    type: object
+  item.CreateItemModel:
+    properties:
+      commodity_id:
+        type: integer
+      item_name:
+        type: string
+      platform_id:
+        type: integer
+      price:
+        type: number
+      seller_id:
+        type: integer
+    required:
+    - commodity_id
+    - item_name
+    - platform_id
+    - price
+    type: object
+  item.SearchQuery:
+    properties:
+      accurate:
+        type: boolean
+      range:
+        type: string
+      search:
+        type: string
+    type: object
+  item.UpdateItemModel:
+    properties:
+      commodity_id:
+        type: integer
+      commodity_item_id:
+        type: integer
+      item_name:
+        type: string
+      platform_id:
+        type: integer
+      price:
+        type: number
+      seller_id:
+        type: integer
+    required:
+    - commodity_id
+    - commodity_item_id
+    - item_name
+    - platform_id
+    - price
+    type: object
+  models.Commodity:
+    properties:
+      category:
+        type: string
+      default_name:
+        type: string
+      id:
+        type: integer
+      produce_address:
+        type: string
+      produce_at:
+        $ref: '#/definitions/models.MyTime'
+    type: object
+  models.CommodityItem:
+    properties:
+      commodity:
+        $ref: '#/definitions/models.Commodity'
+      commodity_id:
+        type: integer
+      id:
+        type: integer
+      item_name:
+        type: string
+      platform:
+        $ref: '#/definitions/models.Platform'
+      platform_id:
+        type: integer
+      price:
+        type: number
+      seller:
+        $ref: '#/definitions/models.Seller'
+      seller_id:
+        type: integer
+      update_at:
+        $ref: '#/definitions/models.MyTime'
+    type: object
+  models.Favorite:
+    properties:
+      commodity_item_id:
+        type: integer
+      commodityItem:
+        $ref: '#/definitions/models.CommodityItem'
+      price_limit:
+        type: number
+      update_at:
+        $ref: '#/definitions/models.MyTime'
+      user:
+        $ref: '#/definitions/models.User'
+      user_id:
+        type: integer
+    type: object
+  models.FavoriteStatisticsResponse:
+    properties:
+      commodityItem:
+        $ref: '#/definitions/models.CommodityItem'
+      count:
+        type: integer
+    type: object
+  models.Message:
+    properties:
+      commodity_item_id:
+        description: 如果不constraint join时要注意
+        type: integer
+      commodityItem:
+        $ref: '#/definitions/models.CommodityItem'
+      create_at:
+        $ref: '#/definitions/models.MyTime'
+      current_price:
+        type: number
+      id:
+        type: integer
+      user:
+        $ref: '#/definitions/models.User'
+      user_id:
+        type: integer
+    type: object
+  models.MyTime:
+    properties:
+      time.Time:
+        type: string
+    type: object
+  models.Platform:
+    properties:
+      country:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      url:
+        type: string
+    type: object
+  models.PriceChange:
+    properties:
+      commodity_item_id:
+        type: integer
+      commodityItem:
+        $ref: '#/definitions/models.CommodityItem'
+      id:
+        type: integer
+      new_price:
+        type: number
+      update_at:
+        $ref: '#/definitions/models.MyTime'
+    type: object
+  models.PriceStatisticsResponse:
+    properties:
+      commodityItem:
+        $ref: '#/definitions/models.CommodityItem'
+      price_variance:
+        type: number
+    type: object
+  models.Seller:
+    properties:
+      address:
+        description: Age      int
+        type: string
+      email:
+        type: string
+      id:
+        type: integer
+      password:
+        type: string
+      username:
+        type: string
+    type: object
+  models.SummaryResponse:
+    properties:
+      category:
+        type: string
+      category_num:
+        type: integer
+      commodity:
+        $ref: '#/definitions/models.Commodity'
+      commodity_num:
+        type: integer
+      favorite_num:
+        type: integer
+      message_num:
+        type: integer
+      platform:
+        $ref: '#/definitions/models.Platform'
+      platform_num:
+        type: integer
+      price_change_num:
+        type: integer
+      seller:
+        $ref: '#/definitions/models.Seller'
+      seller_num:
+        type: integer
+    type: object
+  models.User:
+    properties:
+      age:
+        type: integer
+      email:
+        type: string
+      gender:
+        type: boolean
+      id:
+        type: integer
+      password:
+        type: string
+      phone:
+        type: string
+      username:
+        type: string
+    type: object
+  platform.CreatePlatformRequest:
+    properties:
+      country:
+        type: string
+      name:
+        type: string
+      url:
+        type: string
+    type: object
+  priceChange.GetPriceChangeModel:
+    properties:
+      commodity_item_id:
+        type: integer
+      time_end:
+        $ref: '#/definitions/models.MyTime'
+      time_start:
+        $ref: '#/definitions/models.MyTime'
+    required:
+    - commodity_item_id
+    - time_end
+    - time_start
+    type: object
+  priceChange.UpdatePriceChangeModel:
+    properties:
+      id:
+        type: integer
+      new_price:
+        description: CommodityItemID int     `json:"commodity_item_id"`
+        type: number
+    type: object
+  query.FavoriteStatisticsRequest:
+    properties:
+      age_end:
+        type: integer
+      age_start:
+        type: integer
+      all:
+        type: boolean
+      gender:
+        type: boolean
+    type: object
+  query.PriceStatisticsRequest:
+    properties:
+      commodity_id:
+        type: integer
+      time_end:
+        $ref: '#/definitions/models.MyTime'
+      time_start:
+        $ref: '#/definitions/models.MyTime'
+    required:
+    - commodity_id
+    - time_end
+    - time_start
+    type: object
+  seller.CreateSellerRequest:
+    properties:
+      address:
+        type: string
+      email:
+        type: string
+      password:
+        type: string
+      username:
+        type: string
+    type: object
+  user.CreateUserRequest:
+    properties:
+      age:
+        type: integer
+      email:
+        type: string
+      gender:
+        type: boolean
+      password:
+        type: string
+      phone:
+        type: string
+      username:
+        type: string
+    type: object
+info:
+  contact:
+    email: polaris@fduhole.com
+    name: Maintainer Polaris
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  title: Database System Design Project
+  version: 1.0.0
+paths:
+  /api/annual/summary:
+    get:
+      consumes:
+      - application/json
+      description: Get personal annual summary
+      parameters:
+      - description: Bearer和token空格拼接
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.SummaryResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/common.HttpError'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/common.HttpError'
+      summary: Get personal annual summary
+      tags:
+      - Query
+  /api/annual/summary/all:
+    get:
+      consumes:
+      - application/json
+      description: Get all annual summary
+      parameters:
+      - description: Bearer和token空格拼接
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.SummaryResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/common.HttpError'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/common.HttpError'
+      summary: Get all annual summary
+      tags:
+      - Query
+  /api/commodities:
+    delete:
+      consumes:
+      - application/json
+      description: 删除商品
+      parameters:
+      - description: commodity id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Bearer和token空格拼接
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/common.HttpError'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/common.HttpError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/common.HttpError'
+      summary: 删除商品
+      tags:
+      - 商品
+    post:
+      consumes:
+      - application/json
+      description: 添加商品
+      parameters:
+      - description: json
+        in: body
+        name: json
+        required: true
+        schema:
+          $ref: '#/definitions/commodity.CreateCommodityRequest'
+      - description: Bearer和token空格拼接
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/common.HttpError'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/common.HttpError'
+      summary: 添加商品
+      tags:
+      - 商品
+    put:
+      consumes:
+      - application/json
+      description: 更新商品
+      parameters:
+      - description: json
+        in: body
+        name: json
+        required: true
+        schema:
+          $ref: '#/definitions/models.Commodity'
+      - description: Bearer和token空格拼接
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/common.HttpError'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/common.HttpError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/common.HttpError'
+      summary: 更新商品
+      tags:
+      - 商品
+  /api/commodities/all:
+    get:
+      consumes:
+      - application/json
+      description: 获取所有商品
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Commodity'
+      summary: 获取所有商品
+      tags:
+      - 商品
+  /api/commodities/search:
+    post:
+      consumes:
+      - application/json
+      description: 搜索商品
+      parameters:
+      - description: json
+        in: body
+        name: json
+        required: true
+        schema:
+          $ref: '#/definitions/commodity.SearchQuery'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Commodity'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/common.HttpError'
+      summary: 搜索商品
+      tags:
+      - 商品
+  /api/commodity/all:
+    get:
+      consumes:
+      - application/json
+      description: 获取所有商品
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.CommodityItem'
+            type: array
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/common.HttpError'
+      summary: 获取所有商品
+      tags:
+      - Item
+  /api/commodity/data:
+    get:
+      consumes:
+      - application/json
+      description: 获取自己的商品
+      parameters:
+      - description: Bearer和token空格拼接
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.CommodityItem'
+            type: array
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/common.HttpError'
+      summary: 获取自己的商品
+      tags:
+      - Item
+  /api/commodity/item:
+    delete:
+      consumes:
+      - application/json
+      description: 删除商品
+      parameters:
+      - description: item id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Bearer和token空格拼接
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/common.HttpError'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/common.HttpError'
+      summary: 删除商品
+      tags:
+      - Item
+    post:
+      consumes:
+      - application/json
+      description: 添加商品
+      parameters:
+      - description: json
+        in: body
+        name: json
+        required: true
+        schema:
+          $ref: '#/definitions/item.CreateItemModel'
+      - description: Bearer和token空格拼接
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/common.HttpError'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/common.HttpError'
+      summary: 添加商品
+      tags:
+      - Item
+    put:
+      consumes:
+      - application/json
+      description: 更新商品
+      parameters:
+      - description: json
+        in: body
+        name: json
+        required: true
+        schema:
+          $ref: '#/definitions/item.UpdateItemModel'
+      - description: Bearer和token空格拼接
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/common.HttpError'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/common.HttpError'
+      summary: 更新商品
+      tags:
+      - Item
+  /api/commodity/item/{id}:
+    get:
+      consumes:
+      - application/json
+      description: 根据商品ID获取多个商品项
+      parameters:
+      - description: commodity_id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.CommodityItem'
+            type: array
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/common.HttpError'
+      summary: 根据商品ID获取多个商品项
+      tags:
+      - Item
+  /api/commodity/item/batch:
+    post:
+      consumes:
+      - application/json
+      description: 批量添加商品
+      parameters:
+      - description: json
+        in: body
+        name: json
+        required: true
+        schema:
+          items:
+            $ref: '#/definitions/item.CreateItemModel'
+          type: array
+      - description: Bearer和token空格拼接
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/common.HttpError'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/common.HttpError'
+      summary: 批量添加商品
+      tags:
+      - Item
+  /api/favorite/statistics:
+    post:
+      consumes:
+      - application/json
+      description: Get favorite statistics
+      parameters:
+      - description: json
+        in: body
+        name: json
+        required: true
+        schema:
+          $ref: '#/definitions/query.FavoriteStatisticsRequest'
+      - description: Bearer和token空格拼接
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.FavoriteStatisticsResponse'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/common.HttpError'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/common.HttpError'
+      summary: Get favorite statistics
+      tags:
+      - Query
+  /api/favorites:
+    post:
+      consumes:
+      - application/json
+      description: AddFavorite
+      parameters:
+      - description: json
+        in: body
+        name: json
+        required: true
+        schema:
+          $ref: '#/definitions/favorite.AddFavoriteModel'
+      - description: Bearer和token空格拼接
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/common.HttpError'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/common.HttpError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/common.HttpError'
+      summary: AddFavorite
+      tags:
+      - Favorite
+  /api/favorites/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: DeleteFavorite
+      parameters:
+      - description: item id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Bearer和token空格拼接
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/common.HttpError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/common.HttpError'
+      summary: DeleteFavorite
+      tags:
+      - Favorite
+  /api/favorites/all:
+    get:
+      consumes:
+      - application/json
+      description: GetAllFavorites
+      parameters:
+      - description: Bearer和token空格拼接
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Favorite'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/common.HttpError'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/common.HttpError'
+      summary: GetAllFavorites
+      tags:
+      - Favorite
+  /api/favorites/commodity:
+    post:
+      consumes:
+      - application/json
+      description: AddCommodityFavorite
+      parameters:
+      - description: json
+        in: body
+        name: json
+        required: true
+        schema:
+          $ref: '#/definitions/favorite.AddCommodityFavoriteModel'
+      - description: Bearer和token空格拼接
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/common.HttpError'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/common.HttpError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/common.HttpError'
+      summary: AddCommodityFavorite
+      tags:
+      - Favorite
+  /api/item/history/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete batch priceChange by commodityItemID
+      parameters:
+      - description: commodityItem id
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Bearer和token空格拼接
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/common.HttpError'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/common.HttpError'
+      summary: Delete batch priceChange by commodityItemID
+      tags:
+      - PriceChange
+  /api/login:
+    post:
+      consumes:
+      - application/json
+      description: Login
+      parameters:
+      - description: json
+        in: body
+        name: json
+        required: true
+        schema:
+          $ref: '#/definitions/auth.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/auth.TokenResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/common.HttpError'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/common.HttpError'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/common.HttpError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/common.HttpError'
+      summary: Login
+      tags:
+      - Auth
+  /api/messages:
+    get:
+      consumes:
+      - application/json
+      description: Get all messages
+      parameters:
+      - description: Bearer和token空格拼接
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Message'
+            type: array
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/common.HttpError'
+      summary: Get all messages
+      tags:
+      - Message
+  /api/platform:
+    delete:
+      consumes:
+      - application/json
+      description: Delete platform
+      parameters:
+      - description: platform id
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Bearer和token空格拼接
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/common.HttpError'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/common.HttpError'
+      summary: Delete platform
+      tags:
+      - Platform
+    post:
+      consumes:
+      - application/json
+      description: Add platform
+      parameters:
+      - description: json
+        in: body
+        name: json
+        required: true
+        schema:
+          $ref: '#/definitions/platform.CreatePlatformRequest'
+      - description: Bearer和token空格拼接
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/common.HttpError'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/common.HttpError'
+      summary: Add platform
+      tags:
+      - Platform
+    put:
+      consumes:
+      - application/json
+      description: Update platform
+      parameters:
+      - description: json
+        in: body
+        name: json
+        required: true
+        schema:
+          $ref: '#/definitions/models.Platform'
+      - description: Bearer和token空格拼接
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/common.HttpError'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/common.HttpError'
+      summary: Update platform
+      tags:
+      - Platform
+  /api/platform/all:
+    get:
+      consumes:
+      - application/json
+      description: Get all platform
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Platform'
+            type: array
+      summary: Get all platform
+      tags:
+      - Platform
+  /api/price/history:
+    post:
+      consumes:
+      - application/json
+      description: Get priceChange by ID
+      parameters:
+      - description: json
+        in: body
+        name: json
+        required: true
+        schema:
+          $ref: '#/definitions/priceChange.GetPriceChangeModel'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.PriceChange'
+            type: array
+      summary: Get priceChange by ID
+      tags:
+      - PriceChange
+    put:
+      consumes:
+      - application/json
+      description: Update priceChange
+      parameters:
+      - description: json
+        in: body
+        name: json
+        required: true
+        schema:
+          $ref: '#/definitions/priceChange.UpdatePriceChangeModel'
+      - description: Bearer和token空格拼接
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/common.HttpError'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/common.HttpError'
+      summary: Update priceChange
+      tags:
+      - PriceChange
+  /api/price/history/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete priceChange by ID
+      parameters:
+      - description: priceChange id
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Bearer和token空格拼接
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/common.HttpError'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/common.HttpError'
+      summary: Delete priceChange by ID
+      tags:
+      - PriceChange
+  /api/price/history/batch:
+    post:
+      consumes:
+      - application/json
+      description: Add batch priceChange
+      parameters:
+      - description: json
+        in: body
+        name: json
+        required: true
+        schema:
+          items:
+            $ref: '#/definitions/models.PriceChange'
+          type: array
+      - description: Bearer和token空格拼接
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/common.HttpError'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/common.HttpError'
+      summary: Add batch priceChange
+      tags:
+      - PriceChange
+  /api/price/limit:
+    post:
+      consumes:
+      - application/json
+      description: AddPriceLimit
+      parameters:
+      - description: json
+        in: body
+        name: json
+        required: true
+        schema:
+          $ref: '#/definitions/favorite.PriceLimitModel'
+      - description: Bearer和token空格拼接
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/common.HttpError'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/common.HttpError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/common.HttpError'
+      summary: AddPriceLimit
+      tags:
+      - Favorite
+  /api/price/statistics:
+    post:
+      consumes:
+      - application/json
+      description: Get price statistics
+      parameters:
+      - description: json
+        in: body
+        name: json
+        required: true
+        schema:
+          $ref: '#/definitions/query.PriceStatisticsRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.PriceStatisticsResponse'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/common.HttpError'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/common.HttpError'
+      summary: Get price statistics
+      tags:
+      - Query
+  /api/search:
+    post:
+      consumes:
+      - application/json
+      description: 搜索商品
+      parameters:
+      - description: 'Range: name, category; Search: content to search'
+        in: body
+        name: json
+        required: true
+        schema:
+          $ref: '#/definitions/item.SearchQuery'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.CommodityItem'
+            type: array
+      summary: 搜索商品
+      tags:
+      - Item
+  /api/sellers:
+    delete:
+      consumes:
+      - application/json
+      description: Delete seller
+      parameters:
+      - description: seller id
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Bearer和token空格拼接
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/common.HttpError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/common.HttpError'
+      summary: Delete seller
+      tags:
+      - Seller
+    post:
+      consumes:
+      - application/json
+      description: Add seller
+      parameters:
+      - description: json
+        in: body
+        name: json
+        required: true
+        schema:
+          $ref: '#/definitions/seller.CreateSellerRequest'
+      - description: Bearer和token空格拼接
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/common.HttpError'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/common.HttpError'
+      summary: Add seller
+      tags:
+      - Seller
+    put:
+      consumes:
+      - application/json
+      description: Update seller
+      parameters:
+      - description: json
+        in: body
+        name: json
+        required: true
+        schema:
+          $ref: '#/definitions/models.Seller'
+      - description: Bearer和token空格拼接
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/common.HttpError'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/common.HttpError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/common.HttpError'
+      summary: Update seller
+      tags:
+      - Seller
+  /api/sellers/all:
+    get:
+      consumes:
+      - application/json
+      description: Get all sellers
+      parameters:
+      - description: Bearer和token空格拼接
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Seller'
+            type: array
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/common.HttpError'
+      summary: Get all sellers
+      tags:
+      - Seller
+  /api/sellers/data:
+    get:
+      consumes:
+      - application/json
+      description: Get seller info
+      parameters:
+      - description: Bearer和token空格拼接
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Seller'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/common.HttpError'
+      summary: Get seller info
+      tags:
+      - Seller
+  /api/users:
+    delete:
+      consumes:
+      - application/json
+      description: Delete user
+      parameters:
+      - description: user id
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Bearer和token空格拼接
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/common.HttpError'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/common.HttpError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/common.HttpError'
+      summary: Delete user
+      tags:
+      - User
+    post:
+      consumes:
+      - application/json
+      description: Add user
+      parameters:
+      - description: json
+        in: body
+        name: json
+        required: true
+        schema:
+          $ref: '#/definitions/user.CreateUserRequest'
+      - description: Bearer和token空格拼接
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/common.HttpError'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/common.HttpError'
+      summary: Add user
+      tags:
+      - User
+    put:
+      consumes:
+      - application/json
+      description: Update user
+      parameters:
+      - description: json
+        in: body
+        name: json
+        required: true
+        schema:
+          $ref: '#/definitions/models.User'
+      - description: Bearer和token空格拼接
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/common.HttpError'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/common.HttpError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/common.HttpError'
+      summary: Update user
+      tags:
+      - User
+  /api/users/all:
+    get:
+      consumes:
+      - application/json
+      description: Get all users
+      parameters:
+      - description: Bearer和token空格拼接
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.User'
+            type: array
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/common.HttpError'
+      summary: Get all users
+      tags:
+      - User
+  /api/users/data:
+    get:
+      consumes:
+      - application/json
+      description: Get user info
+      parameters:
+      - description: Bearer和token空格拼接
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.User'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/common.HttpError'
+      summary: Get user info
+      tags:
+      - User
+swagger: "2.0"
