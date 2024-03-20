@@ -1,0 +1,17 @@
+version: '1'
+
+networks:
+  db-network:
+    driver: bridge
+    name: db-network
+
+services:
+  db-system-service:
+    image: ppolariss/database_project:v1
+    environment:
+      - DB_URL=root:root@tcp(host.docker.internal:3306)/price_comparator?charset=utf8mb4&parseTime=True&loc=Local
+    networks:
+      - db-network
+    ports:
+      - "8080:8080"
+    container_name: db-system-service

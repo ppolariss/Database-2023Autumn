@@ -17,6 +17,7 @@ require (
 require (
 	github.com/KyleBanks/depth v1.2.1 // indirect
 	github.com/andybalholm/brotli v1.0.6 // indirect
+	github.com/caarlos0/env/v9 v9.0.0 // indirect
 	github.com/creasty/defaults v1.7.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/gabriel-vasile/mimetype v1.4.2 // indirect
