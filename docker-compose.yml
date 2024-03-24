@@ -5,6 +5,9 @@ networks:
     driver: bridge
     name: db-network
 
+volumes:
+  db-data:
+
 services:
   db-system-service:
     image: ppolariss/database_project:v1
@@ -15,3 +18,12 @@ services:
     ports:
       - "8080:8080"
     container_name: db-system-service
+#  init-data:
+#    image: ppolariss/database_project:v1
+#    depends_on:
+#      - db-system-service
+#    restart: "no"
+#    command: ["./init-data.sh"]
+#    networks:
+#      - db-network
+#    container_name: init-data

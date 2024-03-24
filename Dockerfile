@@ -11,6 +11,15 @@ COPY . .
 
 RUN go build -o DBpj
 
+# Volume 
+
+# ENV DB_URL root:root@tcp(host.docker.internal:3306)/price_comparator?charset=utf8mb4&parseTime=True&loc=Local
+# ENV TZ=Asia/Shanghai
+
+# WORKDIR /app/utils/json
+
+# RUN go test -v .
+
 FROM alpine
 
 WORKDIR /app
