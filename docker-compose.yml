@@ -1,23 +1,47 @@
-version: '1'
+version: '3'
 
-networks:
-  db-network:
-    driver: bridge
-    name: db-network
+# networks:
+#   db-network:
+#     driver: bridge
+#     name: db-network
 
 volumes:
   db-data:
 
 services:
+
+  db-service:
+    container_name: db-service
+    image: mysql:8.0.34
+    restart: always
+    # networks:
+    #   - db-network
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: price_comparator
+      MYSQL_USER: db_user
+      MYSQL_PASSWORD: db_password
+    ports:
+      - "13306:3306"
+    volumes:
+      - db-data:/var/lib/mysql
+      # - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+
   db-system-service:
+    restart: unless-stopped
     image: ppolariss/database_project:v1
     environment:
-      - DB_URL=root:root@tcp(host.docker.internal:3306)/price_comparator?charset=utf8mb4&parseTime=True&loc=Local
-    networks:
-      - db-network
+      - DB_URL=db_user:db_password@tcp(db-service:3306)/price_comparator?charset=utf8mb4&parseTime=True&loc=Local
+# host.docker.internal:3306
+    # networks:
+    #   - db-network
     ports:
       - "8080:8080"
     container_name: db-system-service
+    depends_on:
+      - db-service
+    # command: ["sh", "-c", "while ! nc -z db-service 3306; do sleep 1; done; ./DBpj"]
+    # command: [ "bash", "-c", "sleep 10 && ./DBpj"]
 #  init-data:
 #    image: ppolariss/database_project:v1
 #    depends_on:
